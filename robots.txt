@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /thank-you/
 
-Sitemap: https://alekhelpers.github.io/Better-PPO/sitemap.xml
+Sitemap: https://alekhelpers.github.io/better-ppo/sitemap.xml

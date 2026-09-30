@@ -284,7 +284,7 @@ function partnerMarkup(vendor, note, answers, topic) {
       <p class="fine">Your contact info is shared only with this partner, and only if you choose this. It is not sold to anyone else.</p>
       <form id="optin-form" class="hidden" action="https://formsubmit.co/${vendor.email}" method="POST">
         <input type="hidden" name="_subject" value="Better PPO callback request — ${topic.title}" />
-        <input type="hidden" name="_next" value="https://alekhelpers.github.io/Better-PPO/thank-you/" />
+        <input type="hidden" name="_next" value="https://alekhelpers.github.io/better-ppo/thank-you/" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="topic" value="${topic.title}" />

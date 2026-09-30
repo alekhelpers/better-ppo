@@ -1,6 +1,6 @@
 # Better PPO visibility
 
-Live URL: https://alekhelpers.github.io/Better-PPO/
+Live URL: https://alekhelpers.github.io/better-ppo/
 
 ## After it is live
 
