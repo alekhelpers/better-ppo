@@ -22,7 +22,7 @@ const vendors = {
     focus: "ACA marketplace and private PPO conversations for individuals, families, and small businesses.",
     phone: "713-304-6649",
     tel: "+17133046649",
-    email: "alek.helpers@gmail.com",
+    acceptsCallback: true,
     website: "https://alekhelpers.github.io/Helpers-Insurance-/",
     google: "",
     states: HEALTH_STATES
@@ -33,7 +33,7 @@ const vendors = {
     focus: "Wills, trusts, and estate conversations",
     phone: "",
     tel: "",
-    email: "",
+    acceptsCallback: false,
     website: "",
     google: "",
     states: []
@@ -277,14 +277,13 @@ function partnerMarkup(vendor, note, answers, topic) {
   const google = vendor.google
     ? `<a class="btn btn-line" href="${vendor.google}" target="_blank" rel="noopener">Google listing</a>`
     : "";
-  const optin = vendor.email ? `
+  const optin = vendor.acceptsCallback ? `
     <div class="optin">
       <h3>Call them when you're ready — or request a callback from this partner only.</h3>
       <button class="btn btn-line" type="button" id="show-optin">Request a call from this partner</button>
       <p class="fine">Your contact info is shared only with this partner, and only if you choose this. It is not sold to anyone else.</p>
-      <form id="optin-form" class="hidden" action="https://formsubmit.co/${vendor.email}" method="POST">
+      <form id="optin-form" class="hidden">
         <input type="hidden" name="_subject" value="Better PPO callback request — ${topic.title}" />
-        <input type="hidden" name="_next" value="https://alekhelpers.github.io/better-ppo/thank-you/" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="topic" value="${topic.title}" />
@@ -302,7 +301,7 @@ function partnerMarkup(vendor, note, answers, topic) {
         <div class="form-actions">
           <button class="btn" type="submit">Send this request to the partner</button>
         </div>
-        <p class="fine">Goes only to this partner. First request may need an email confirmation.</p>
+        <p class="fine" id="optin-note">We'll pass this to the partner you were matched with. Nothing else is shared.</p>
       </form>
     </div>
   ` : "";
@@ -329,6 +328,25 @@ function bindPartner(vendor, answers, topic) {
     form.classList.remove("hidden");
     opener.classList.add("hidden");
     form.querySelector("input[name='name']").focus();
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = form.querySelector('button[type="submit"]');
+    const note = document.getElementById("optin-note");
+    button.disabled = true;
+    try {
+      const inbox = atob("YWxlay5oZWxwZXJAZ21haWwuY29t");
+      const response = await fetch("https://formsubmit.co/ajax/" + inbox, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form)
+      });
+      if (!response.ok) throw new Error("send failed");
+      window.location.href = "thank-you/";
+    } catch (error) {
+      button.disabled = false;
+      if (note) note.textContent = "That request did not send. Please call the partner instead.";
+    }
   });
 }
 
